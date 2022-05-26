@@ -2,6 +2,7 @@
     "name": "electron-autotheme",
     "version": "1.0.0",
     "description": "",
+    "main": "dist/index.js",
     "scripts": {
         "test": "tsc && node dist/test.js"
     },
