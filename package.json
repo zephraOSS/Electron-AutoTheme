@@ -1,0 +1,31 @@
+{
+    "name": "electron-autotheme",
+    "version": "1.0.0",
+    "description": "",
+    "scripts": {
+        "test": "tsc && node dist/test.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ZephraCloud/Electron-AutoTheme.git"
+    },
+    "keywords": [
+        "electron",
+        "auto-theme"
+    ],
+    "author": "zephra",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/ZephraCloud/Electron-AutoTheme/issues"
+    },
+    "homepage": "https://github.com/ZephraCloud/Electron-AutoTheme#readme",
+    "devDependencies": {
+        "@types/node": "^17.0.35",
+        "typescript": "^4.7.2"
+    },
+    "dependencies": {
+        "cron": "^2.0.0",
+        "ipinfo": "^1.5.1",
+        "suncalc": "^1.9.0"
+    }
+}
