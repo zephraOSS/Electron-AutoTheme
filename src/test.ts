@@ -6,4 +6,4 @@ new AutoTheme((useDark: boolean) => {
     console.log(useDark ? "dark" : "light");
 });
 
-process.exit(1);
+process.exit(0);
