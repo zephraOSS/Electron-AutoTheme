@@ -1,22 +1,47 @@
 import * as SunCalc from "suncalc";
 import * as cron from "cron";
 import ipInfo from "ipinfo";
+import ElectronStore from "electron-store";
+
+interface Location {
+    latitude: number;
+    longitude: number;
+}
 
 export class AutoTheme {
     private currentCronJob: cron.CronJob;
-    private location: { latitude: number; longitude: number };
+    private location: Location;
+    private readonly store: ElectronStore;
 
-    constructor(func: (useDark: boolean) => void) {
+    constructor(func: (useDark: boolean) => void, store?: ElectronStore) {
         this.newAutoTheme(func);
+
+        if (store) this.store = store;
     }
 
     private async getLocation() {
+        if (this.store && this.store.get("electron-autotheme.location")) {
+            const date = <Date>this.store.get("electron-autotheme.date");
+
+            // Check if date is not older than 48 hours
+            if (
+                date &&
+                date.getTime() + 1000 * 60 * 60 * 48 > new Date().getTime()
+            )
+                return <Location>this.store.get("electron-autotheme.location");
+        }
+
         const loc = (await ipInfo()).loc.split(",");
 
         this.location = {
             latitude: parseFloat(loc[0]),
             longitude: parseFloat(loc[1])
         };
+
+        if (this.store) {
+            this.store.set("electron-autotheme.location", this.location);
+            this.store.set("electron-autotheme.date", new Date());
+        }
 
         return this.location;
     }
