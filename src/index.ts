@@ -12,6 +12,7 @@ export class AutoTheme {
     private currentCronJob: cron.CronJob;
     private location: Location;
     private readonly store: ElectronStore;
+    private useDark: boolean;
 
     constructor(func: (useDark: boolean) => void, store?: ElectronStore) {
         this.newAutoTheme(func);
@@ -73,6 +74,9 @@ export class AutoTheme {
                 : sunset;
 
         this.currentCronJob?.stop();
+        this.useDark = useDark;
+
+        func(useDark);
 
         const cronJob = new cron.CronJob(cronDate, () => {
             const now = new Date(),
@@ -80,11 +84,17 @@ export class AutoTheme {
 
             func(useDark);
 
+            this.useDark = useDark;
+
             this.newAutoTheme(func);
         });
 
         cronJob.start();
 
         this.currentCronJob = cronJob;
+    }
+
+    public useDarkMode() {
+        return this.useDark;
     }
 }
