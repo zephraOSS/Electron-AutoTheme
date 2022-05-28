@@ -1,5 +1,5 @@
 {
-    "name": "@ZephraCloud/electron-autotheme",
+    "name": "@zephracloud/electron-autotheme",
     "version": "1.0.2",
     "description": "",
     "main": "dist/index.js",
