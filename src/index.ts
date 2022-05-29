@@ -11,10 +11,10 @@ interface Location {
 export class AutoTheme {
     private currentCronJob: cron.CronJob;
     private location: Location;
-    private readonly store: ElectronStore;
+    private readonly store: ElectronStore<any>;
     private useDark: boolean;
 
-    constructor(func: (useDark: boolean) => void, store?: ElectronStore) {
+    constructor(func: (useDark: boolean) => void, store?: ElectronStore<any>) {
         this.newAutoTheme(func);
 
         if (store) this.store = store;
