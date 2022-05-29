@@ -97,4 +97,8 @@ export class AutoTheme {
     public useDarkMode() {
         return this.useDark;
     }
+
+    public stop() {
+        this.currentCronJob?.stop();
+    }
 }
