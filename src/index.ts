@@ -22,7 +22,9 @@ export class AutoTheme {
 
     private async getLocation() {
         if (this.store && this.store.get("electron-autotheme.location")) {
-            const date = <Date>this.store.get("electron-autotheme.date");
+            const date = new Date(
+                <string>this.store.get("electron-autotheme.date")
+            );
 
             // Check if date is not older than 48 hours
             if (
