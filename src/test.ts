@@ -4,6 +4,5 @@ console.log("Loaded test...");
 
 new AutoTheme((useDark: boolean) => {
     console.log(useDark ? "dark" : "light");
+    process.exit(0);
 });
-
-process.exit(0);
