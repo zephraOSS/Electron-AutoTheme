@@ -34,19 +34,25 @@ export class AutoTheme {
                 return <Location>this.store.get("electron-autotheme.location");
         }
 
-        const loc = (await ipInfo()).loc.split(",");
+        try {
+            const loc = (await ipInfo()).loc.split(",");
 
-        this.location = {
-            latitude: parseFloat(loc[0]),
-            longitude: parseFloat(loc[1])
-        };
+            this.location = {
+                latitude: parseFloat(loc[0]),
+                longitude: parseFloat(loc[1])
+            };
 
-        if (this.store) {
-            this.store.set("electron-autotheme.location", this.location);
-            this.store.set("electron-autotheme.date", new Date());
+            if (this.store) {
+                this.store.set("electron-autotheme.location", this.location);
+                this.store.set("electron-autotheme.date", new Date());
+            }
+
+            return this.location;
+        } catch (e) {
+            console.error(e);
+
+            return null;
         }
-
-        return this.location;
     }
 
     private getSunriseSunset(
@@ -63,8 +69,17 @@ export class AutoTheme {
     }
 
     private async newAutoTheme(func: Function): Promise<void> {
-        const location = await this.getLocation(),
-            { sunrise, sunset } = this.getSunriseSunset(),
+        const location = await this.getLocation();
+
+        if (!location) {
+            console.error("Could not get location");
+
+            setTimeout(() => this.newAutoTheme(func), 1000 * 60);
+
+            return;
+        }
+
+        const { sunrise, sunset } = this.getSunriseSunset(),
             now = new Date(),
             useDark = now < sunrise || now >= sunset,
             cronDate: Date = useDark
