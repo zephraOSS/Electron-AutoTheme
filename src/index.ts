@@ -1,5 +1,6 @@
 import * as SunCalc from "suncalc";
 import * as cron from "cron";
+
 import ipInfo from "ipinfo";
 import ElectronStore from "electron-store";
 
@@ -76,19 +77,20 @@ export class AutoTheme {
 
             setTimeout(() => this.newAutoTheme(func), 1000 * 60);
 
+            func(false);
+
             return;
         }
 
-        const { sunrise, sunset } = this.getSunriseSunset(),
-            now = new Date(),
-            useDark = now < sunrise || now >= sunset,
-            cronDate: Date = useDark
-                ? this.getSunriseSunset(
-                      location.latitude,
-                      location.longitude,
-                      new Date(now.getTime() + 1000 * 60 * 60 * 24)
-                  ).sunrise
-                : sunset;
+        const now = new Date(),
+            { sunrise, sunset } = this.getSunriseSunset(
+                location.latitude,
+                location.longitude,
+                new Date(now.getTime() + 1000 * 60 * 60 * 24)
+            );
+
+        const useDark = now < sunrise || now >= sunset,
+            cronDate: Date = useDark ? sunrise : sunset;
 
         this.currentCronJob?.stop();
         this.useDark = useDark;
