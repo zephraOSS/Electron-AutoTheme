@@ -83,14 +83,16 @@ export class AutoTheme {
         }
 
         const now = new Date(),
-            { sunrise, sunset } = this.getSunriseSunset(
-                location.latitude,
-                location.longitude,
-                new Date(now.getTime() + 1000 * 60 * 60 * 24)
-            );
+            { sunrise, sunset } = this.getSunriseSunset();
 
         const useDark = now < sunrise || now >= sunset,
-            cronDate: Date = useDark ? sunrise : sunset;
+            cronDate: Date = useDark
+                ? this.getSunriseSunset(
+                      location.latitude,
+                      location.longitude,
+                      new Date(now.getTime() + 1000 * 60 * 60 * 24)
+                  ).sunrise
+                : sunset;
 
         this.currentCronJob?.stop();
         this.useDark = useDark;
